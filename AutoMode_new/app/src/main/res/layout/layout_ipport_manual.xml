@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/loginpg_back"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/accounts_actiona_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1A1F28"
+        android:orientation="horizontal" />
+
+
+        <LinearLayout
+            android:id="@+id/layout_campaign_credential_header"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="150dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:visibility="visible" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical" >
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" >
+
+                    <LinearLayout
+                        android:id="@+id/layout_campaign_credentials"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:visibility="visible" >
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="20dp"
+                            >
+
+                            <LinearLayout
+                                android:id="@+id/layout_campaign_details"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center_vertical"
+                                android:orientation="vertical"
+                                android:layout_marginTop="10dp">
+
+                                <!-- new -->
+
+
+                                <!-- new -->
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginTop="30dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal" >
+
+                                    <!--<TextView-->
+                                    <!--style="@style/HeadingFontStyle"-->
+                                    <!--android:layout_width="0dp"-->
+                                    <!--android:layout_weight="1"-->
+                                    <!--android:gravity="right"-->
+                                    <!--android:paddingRight="18dp"-->
+                                    <!--android:text="User Name"-->
+                                    <!--android:textColor="#505051"-->
+                                    <!--android:textSize="10dp" />-->
+
+                                    <EditText
+                                        android:id="@+id/et_ip"
+                                        android:layout_width="0dp"
+                                        android:layout_marginRight="5dp"
+                                        android:layout_weight="2.3"
+                                        android:paddingTop="5dp"
+                                        android:imeOptions="actionNext"
+                                        android:hint="Enter IP"
+                                        android:textColorHint="#FFF"
+                                        android:maxLength="126"
+                                        android:paddingLeft="35dp"
+                                        android:singleLine="true"
+                                        android:text=""
+                                        android:textColor="#FFF"
+                                        android:textSize="15dp"
+                                        android:background="@color/background_material_dark"
+                                        android:layout_height="wrap_content" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5dp"
+                                    android:layout_marginTop="30dp"
+                                    android:gravity="center_vertical"
+                                    android:orientation="horizontal" >
+
+                                    <!--<TextView-->
+                                    <!--style="@style/HeadingFontStyle"-->
+                                    <!--android:layout_width="0dp"-->
+                                    <!--android:layout_weight="1"-->
+                                    <!--android:gravity="right"-->
+                                    <!--android:paddingRight="18dp"-->
+                                    <!--android:text="Password"-->
+                                    <!--android:textColor="#505051"-->
+                                    <!--android:textSize="10dp" />-->
+
+                                    <EditText
+                                        android:id="@+id/et_port"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="2"
+                                        android:maxLength="126"
+                                        android:imeOptions="actionDone"
+                                        android:inputType="text"
+                                        android:textColorHint="#FFF"
+                                        android:paddingLeft="35dp"
+                                        android:paddingTop="5dp"
+                                        android:singleLine="true"
+                                        android:hint="Enter Port"
+                                        android:text=""
+                                        android:textColor="@android:color/white"
+                                        android:textSize="15dp"
+                                        android:background="@color/background_material_dark"
+
+                                        android:layout_height="wrap_content" />
+
+                                    <!--<ImageView-->
+                                    <!--android:id="@+id/btn_save_camapaign_details"-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:padding="5dp"-->
+                                    <!--android:src="@drawable/friends_edit_icon" />-->
+
+                                    <!--<ImageView-->
+                                    <!--android:id="@+id/btn_edit_camapaign_details"-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:layout_marginLeft="2dp"-->
+                                    <!--android:layout_marginRight="5dp"-->
+                                    <!--android:src="@drawable/friends_edit_icon"-->
+                                    <!--android:visibility="gone" />-->
+                                </LinearLayout>
+
+                                <Button
+                                    android:id="@+id/btn_save"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="60dp"
+                                    android:background="@drawable/fb_submit_feedback_btn"
+                                    android:layout_gravity="bottom"
+                                    android:gravity="center"
+                                    android:layout_marginTop="30dp"
+                                    android:layout_marginBottom="15dp"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="20dp"
+                                    android:text="SAVE" />
+
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+</LinearLayout>
