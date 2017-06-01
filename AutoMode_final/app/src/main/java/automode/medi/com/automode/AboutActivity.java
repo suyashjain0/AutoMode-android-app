@@ -17,12 +17,11 @@ public class AboutActivity  extends Activity implements View.OnClickListener{
     ImageButton homeButton,searchButton,savedlocationButton,aboutButton;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_abtus);
         mContext=AboutActivity.this;
         initView();
-        resetImagesFormOnCreate();
 
     }
 
@@ -43,22 +42,18 @@ public class AboutActivity  extends Activity implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imageButton_about:
-                aboutButton.setBackgroundResource(R.drawable.about_icon_enable);
                 Intent intent3 = new Intent(getApplicationContext(), AboutActivity.class);
                 startActivity(intent3);
                 break;
             case R.id.imageButton_fav:
-                resetImages();
                 Intent intent = new Intent(getApplicationContext(), SavedLocationHistoryActivity.class);
                 startActivity(intent);
                 break;
             case R.id.imageButton_home:
-                resetImages();
                 Intent intent2 = new Intent(getApplicationContext(), HomeActivity.class);
                 startActivity(intent2);
                 break;
             case R.id.imageButton_search:
-                resetImages();
                 Intent intent1 = new Intent(getApplicationContext(), InputModeActivity.class);
                 startActivity(intent1);
                 break;
@@ -66,20 +61,6 @@ public class AboutActivity  extends Activity implements View.OnClickListener{
     }
 
 
-    private void resetImages(){
-        homeButton.setBackgroundResource(R.drawable.home_icon);
-        aboutButton.setBackgroundResource(R.drawable.about_icon);
-        searchButton.setBackgroundResource(R.drawable.search_icon);
-        savedlocationButton.setBackgroundResource(R.drawable.favorite_icon);
-
-    }
-    private void resetImagesFormOnCreate(){
-        homeButton.setBackgroundResource(R.drawable.home_icon);
-        aboutButton.setBackgroundResource(R.drawable.about_icon_enable);
-        searchButton.setBackgroundResource(R.drawable.search_icon);
-        savedlocationButton.setBackgroundResource(R.drawable.favorite_icon);
-
-    }
 
 
 }

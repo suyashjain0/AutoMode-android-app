@@ -5,12 +5,17 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -25,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import automode.medi.com.automode.utils.AppUtils;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Lenovo on 08-05-2017.
@@ -38,7 +44,7 @@ public class TimetableActivity extends Activity implements View.OnClickListener{
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_timetable);
         mContext=TimetableActivity.this;
@@ -90,13 +96,19 @@ public class TimetableActivity extends Activity implements View.OnClickListener{
                 startActivity(intent1);
                 break;
             case R.id.tv_day_monday:
-                Picasso.with(mContext)
-                        .load("https://lh3.googleusercontent.com/DhWDuIlfAAkz0wl55BNZG5XLPNsoNvrvE5KdpVLtEQtG8qXO0EMSf7wSdh3YP6Sl2_2Rj6Z3oQ17YdM=w1279-h656")
-                        .placeholder(R.drawable.ic_launcher).error(R.drawable.ic_launcher).into(mondayView);
-                //new TimeTableUrlTask("monday").execute();
+                new TimeTableUrlTask("monday").execute();
                 break;
             case R.id.tv_day_tuesday:
                 new TimeTableUrlTask("tuesday").execute();
+                break;
+            case R.id.tv_day_wednesday:
+                new TimeTableUrlTask("wednesday").execute();
+                break;
+            case R.id.tv_day_thursday:
+                new TimeTableUrlTask("thursday").execute();
+                break;
+            case R.id.tv_day_friday:
+                new TimeTableUrlTask("friday").execute();
                 break;
         }
     }
@@ -147,58 +159,93 @@ public class TimetableActivity extends Activity implements View.OnClickListener{
                 return;
             }
             if(response!=null && !response.isEmpty() && !response.equalsIgnoreCase("Failure")){
-                new DownloadTimeTableFromDriveTask(response).execute();
-                Toast.makeText(mContext, "URL"+response, Toast.LENGTH_SHORT).show();
+                showPopUpForImage(response,dayName);
             }
             else{
-                Toast.makeText(mContext, "Credentails not valid ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
     }
+    WindowManager manager=null;
+    View popipView=null;
 
-    @TargetApi(Build.VERSION_CODES.CUPCAKE)
-    private class DownloadTimeTableFromDriveTask extends AsyncTask<Void, Void, Void> {
-        String url;
+        private void showPopUpForImage(String url,String day){
+            manager = (WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+            WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
+                    PixelFormat.TRANSPARENT, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            );
 
-        public DownloadTimeTableFromDriveTask(String URL) {
-            url=URL;
-        }
-        @Override
-        protected Void doInBackground(Void... params) {
-            downloadTimeTable(url);
-            return null;
-        }
-    }
+            layoutParams.gravity = Gravity.CENTER;
+            layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+            layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+            layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            layoutParams.windowAnimations = android.R.style.Animation_InputMethod;
+            layoutParams.format=PixelFormat.TRANSPARENT;
+            layoutParams.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            layoutParams.packageName = mContext.getPackageName();
+            layoutParams.setTitle("AutoMode");
+            layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+            popipView = View.inflate(mContext.getApplicationContext(), R.layout.layout_popup_image, null);
 
-    private void downloadTimeTable(String URL){
-        try{
-            URL url = new URL(URL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Authorization", "OAuth " + GoogleAuthUtil.getToken(mContext, "suyashj96@gmail.com", "read"));
-            conn.setDoInput(true);
-            // Starts the query
-            conn.connect();
-            int responseCode = conn.getResponseCode();
-            //you will recive the file in input stream
-            File sdcard = Environment.getExternalStorageDirectory();
-            File file = new File(sdcard, "filename.ext");
+            manager.addView(popipView, layoutParams);
 
-            FileOutputStream fileOutput = new FileOutputStream(file);
-            InputStream inputStream = conn.getInputStream();
+            ImageView imageView= (ImageView) popipView.findViewById(R.id.image_popup);
+            Button cancelButton = (Button) popipView.findViewById(R.id.btn_cancel);
 
-            byte[] buffer = new byte[1024];
-            int bufferLength = 0;
-
-            while ( (bufferLength = inputStream.read(buffer)) > 0 ) {
-                fileOutput.write(buffer, 0, bufferLength);
+            if(url!=null) {
+                Picasso.with(mContext)
+                        .load(url)
+                        .placeholder(getDrawableForDay(day)).error(getDrawableForDay(day)).into(imageView);
             }
-            fileOutput.close();
+            PhotoViewAttacher pAttacher;
+            pAttacher = new PhotoViewAttacher(imageView);
+            pAttacher.update();
+
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(popipView!=null && popipView.isShown()){
+                        manager.removeView(popipView);
+
+                    }
+                }
+            });
+
+
+
         }
-        catch (Exception e){
-            e.printStackTrace();
+
+        private int getDrawableForDay(String day) {
+            Integer imageDay = null;
+            if (day != null) {
+                if (day.equalsIgnoreCase("monday")) {
+                    imageDay = R.drawable.tt_monday;
+                } else if (day.equalsIgnoreCase("tuesday")) {
+                    imageDay = R.drawable.tt_tuesday;
+
+                } else if (day.equalsIgnoreCase("wednesday")) {
+                    imageDay = R.drawable.tt_wednesday;
+
+                } else if (day.equalsIgnoreCase("thursday")) {
+                    imageDay = R.drawable.tt_thursday;
+
+                } else if (day.equalsIgnoreCase("friday")) {
+                    imageDay = R.drawable.tt_friday;
+                } else {
+                    imageDay = R.drawable.ic_launcher;
+                }
+            }
+            return imageDay;
+
         }
+    @Override
+    public void onBackPressed() {
+        if(popipView!=null && popipView.isShown()){
+            manager.removeView(popipView);
+        }
+        super.onBackPressed();
     }
+
 
 }

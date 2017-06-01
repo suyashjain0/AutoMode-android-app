@@ -4,15 +4,23 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.PixelFormat;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import automode.medi.com.automode.utils.AppUtils;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by Lenovo on 08-05-2017.
@@ -26,7 +34,7 @@ public class EventActivity extends Activity implements View.OnClickListener {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_event);
         mContext=EventActivity.this;
@@ -69,6 +77,14 @@ public class EventActivity extends Activity implements View.OnClickListener {
                 Intent intent1 = new Intent(getApplicationContext(), InputModeActivity.class);
                 startActivity(intent1);
                 break;
+            case R.id.tv_event_one:
+                new EventNameUrlTask("event1").execute();
+
+                break;
+            case R.id.tv_event_two:
+                new EventNameUrlTask("event2").execute();
+                break;
+
         }
     }
 
@@ -117,17 +133,83 @@ public class EventActivity extends Activity implements View.OnClickListener {
                 Toast.makeText(mContext, "Unable to connect server", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(response!=null && !response.isEmpty()){
-                Toast.makeText(mContext, "URL"+response, Toast.LENGTH_SHORT).show();
+            if(response!=null && !response.isEmpty() &&!response.equalsIgnoreCase("failure")){
+                showPopUpForImage(response,eventName);
             }
             else{
-                Toast.makeText(mContext, "Credentails not valid ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                 return;
             }
         }
     }
+    WindowManager manager=null;
+    View popipView=null;
+
+    private void showPopUpForImage(String url,String event){
+        manager = (WindowManager) mContext.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
+                PixelFormat.TRANSPARENT, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        );
+
+        layoutParams.gravity = Gravity.CENTER;
+        layoutParams.type = WindowManager.LayoutParams.TYPE_PHONE;
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.windowAnimations = android.R.style.Animation_InputMethod;
+        layoutParams.format=PixelFormat.TRANSPARENT;
+        layoutParams.screenOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        layoutParams.packageName = mContext.getPackageName();
+        layoutParams.setTitle("AutoMode");
+        layoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH;
+        popipView = View.inflate(mContext.getApplicationContext(), R.layout.layout_popup_image, null);
+
+        manager.addView(popipView, layoutParams);
+
+        ImageView imageView= (ImageView) popipView.findViewById(R.id.image_popup);
+        Button cancelButton = (Button) popipView.findViewById(R.id.btn_cancel);
+
+        if(url!=null) {
+            Picasso.with(mContext)
+                    .load(url)
+                    .placeholder(getDrawableForEvent(event)).error(getDrawableForEvent(event)).into(imageView);
+        }
+        PhotoViewAttacher pAttacher;
+        pAttacher = new PhotoViewAttacher(imageView);
+        pAttacher.update();
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(popipView!=null && popipView.isShown()){
+                    manager.removeView(popipView);
+
+                }
+            }
+        });
 
 
 
+    }
 
+    private int getDrawableForEvent(String day) {
+        Integer imageEvent = null;
+        if (day != null) {
+            if (day.equalsIgnoreCase("event1")) {
+                imageEvent = R.drawable.event_1;
+            } else if (day.equalsIgnoreCase("event2")) {
+                imageEvent = R.drawable.event_2;
+            }  else {
+                imageEvent = R.drawable.ic_launcher;
+            }
+        }
+        return imageEvent;
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(popipView!=null && popipView.isShown()){
+            manager.removeView(popipView);
+        }
+        super.onBackPressed();
+    }
 }

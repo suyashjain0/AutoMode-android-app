@@ -20,7 +20,7 @@ public class CollegeActivity extends Activity implements View.OnClickListener {
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_college);
         mContext = CollegeActivity.this;

@@ -375,7 +375,7 @@ public class AccountActivity extends Activity implements View.OnClickListener{
     public void onBackPressed() {
         //super.onBackPressed();
         if(mContext==AccountActivity.this){
-            finish();//THIS BLOCK WILL NOT DO ANYTHING AND WOULD DISABLE BACK BUTTON
+        //THIS BLOCK WILL NOT DO ANYTHING AND WOULD DISABLE BACK BUTTON
 
         }else{
             super.onBackPressed();

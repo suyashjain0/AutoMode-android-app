@@ -164,7 +164,7 @@ public class RegistrationActivity extends Activity implements View.OnClickListen
                 Toast.makeText(mContext, "Unable to connect server", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if(isValidUser && response!=null && pass==cpass && response.equalsIgnoreCase("Success")){
+            if(isValidUser && response!=null  && response.equalsIgnoreCase("Success")){
                 etUserName.setEnabled(false);
                 etPassword.setEnabled(false);
                 etEmail.setEnabled(false);
