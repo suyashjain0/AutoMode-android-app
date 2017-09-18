@@ -22,17 +22,12 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
-import automode.medi.com.automode.holder.UserDetails;
 import automode.medi.com.automode.utils.AppUtils;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**

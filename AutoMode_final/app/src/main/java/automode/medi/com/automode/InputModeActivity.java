@@ -246,7 +246,7 @@ public class InputModeActivity extends Activity implements View.OnClickListener,
                 Log.d("CurrentMode", "actionId: " + actionId + " SearchCode: " + EditorInfo.IME_ACTION_SEARCH);
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     Log.d("CurrentMode", "action search");
-                    String searchedLocation = tvCurrentLocation.getText().toString();
+                    String  searchedLocation = tvCurrentLocation.getText().toString();
                     Log.d("CurrentMode", "locationInEditText: " + searchedLocation);
                     hideSoftKeyboard(tvCurrentLocation.getWindowToken());
                     boolean isLocationEmpty = searchedLocation.isEmpty();

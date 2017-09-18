@@ -1,16 +1,12 @@
 package automode.medi.com.automode;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -34,10 +30,8 @@ import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 
-import automode.medi.com.automode.adapter.SavedLocationAdapter;
 import automode.medi.com.automode.utils.AppUtils;
 
 
@@ -68,6 +62,8 @@ public class HomeActivity extends FragmentActivity implements View.OnClickListen
         AppUtils.getInstance(getApplicationContext()).connectToScreenService();
         resetImagesFormOnCreate();
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)

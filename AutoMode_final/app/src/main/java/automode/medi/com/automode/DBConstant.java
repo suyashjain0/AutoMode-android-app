@@ -7,7 +7,7 @@ package automode.medi.com.automode;
 public interface DBConstant {
     String TAG = "DBController";
     String DB_NAME = "AutoMode.db";
-    int DB_VERSION = 41;
+    int DB_VERSION = 1;
     String TABLE_SAVED_LOCATIONS = "table_saved_locations";
 
 
